@@ -8,7 +8,7 @@ const notionServer = new NotionServer();
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { page_id } = req.query;
 
-  console.info('/api/detauils');
+  console.info('/api/details');
 
   if (!page_id) {
     res.status(400).json(createResposeData(400, {}, `请求失败, 缺少参数[page_id]!`));
