@@ -2,9 +2,9 @@ import { HeaderLinkProps } from '@/entity/Common';
 import Link from 'next/link';
 
 export default function Nav({ linkData = [] }: { linkData: HeaderLinkProps[] }) {
-  console.info('导航栏linkData:', linkData);
+  console.log('🚀🐍 ~ file: Nav.tsx:5 ~ Nav ~ linkData:', linkData);
   return (
-    <div className='flex flex-row dark:text-white '>
+    <div className='flex-row hidden sm:flex dark:text-white'>
       {linkData.map(({ href, title }, index) => {
         return (
           <Link

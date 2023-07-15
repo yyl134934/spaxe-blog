@@ -1,6 +1,6 @@
-import { User } from './../../entity/User.d';
+import { User } from '../../../entity/User';
 import { NextApiRequest, NextApiResponse } from 'next';
-import NotionServer, { createResposeData } from '../../lib/NotionServer';
+import NotionServer, { createResposeData } from '../../../lib/NotionServer';
 import { APIResponseError } from '@notionhq/client';
 
 const notionServer = new NotionServer();

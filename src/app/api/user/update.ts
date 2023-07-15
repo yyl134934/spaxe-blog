@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import NotionServer, { createResposeData } from '../../lib/NotionServer';
+import NotionServer, { createResposeData } from '../../../lib/NotionServer';
 import { User, UserType } from '@/entity/User';
 import { APIResponseError } from '@notionhq/client';
 

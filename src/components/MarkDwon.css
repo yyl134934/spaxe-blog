@@ -1,0 +1,28 @@
+/* .markdown{
+  position: relative;
+  background-color:#ffffff;
+}
+.markdown nav{
+  position: absolute;
+  top: 0;
+  right: -18rem;
+} */
+.markdown-toc-outline{
+        padding-right: 4rem ;
+        padding-top: 2rem ;
+        padding-bottom: 2rem ;
+}
+.markdown-toc-list{
+        list-style-type: none;
+}
+.markdown-toc-link{
+        color: #14B8A6;
+        text-decoration: none;
+}
+.markdown-toc-link [data-theme='dark']{
+        --tw-text-opacity: 1;
+        color: rgb(245 245 245 / var(--tw-text-opacity));
+}
+.markdown-toc-link:hover{
+        color: #2dd4bf;
+}
