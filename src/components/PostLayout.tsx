@@ -12,7 +12,7 @@ const PostList = dynamic(() => import('@/components/PostList'), {
 });
 
 const fetcher = async (keyword: string) => {
-  const res = await fetch(`http://localhost:6002/${keyword}`);
+  const res = await fetch(`http://${window.location.host}/${keyword}`);
   return res.json();
 };
 
