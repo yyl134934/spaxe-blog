@@ -1,5 +1,8 @@
 ---
 title: '何时使用静态生成v.s.服务器端渲染'
+name: "213"
+author: "/author.png"
+github: "https://github.com/yyl134934"
 date: '2023-07-10'
 description: 'Next.js预渲染模式之静态生成的优缺点，以及使用场景'
 ---

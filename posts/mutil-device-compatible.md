@@ -1,7 +1,10 @@
 ---
 title: '多端兼容方案'
+name: "213"
+author: "/author.png"
+github: "https://github.com/yyl134934"
 date: '2023-07-12'
-tags: "React,Next"
+tags: "React,Nextjs"
 description: '探讨前端跨平台适配方案——响应式布局以及自适应设计'
 ---
 ### 多端兼容方案

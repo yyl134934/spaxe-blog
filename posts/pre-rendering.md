@@ -1,5 +1,8 @@
 ---
 title: '预渲染的两种形式'
+name: "213"
+author: "/author.png"
+github: "https://github.com/yyl134934"
 date: '2023-07-11'
 description: 'Next.js有两种预渲染形式：静态生成和服务器端渲染。'
 ---
