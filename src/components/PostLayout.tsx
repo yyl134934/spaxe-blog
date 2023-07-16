@@ -12,7 +12,8 @@ const PostList = dynamic(() => import('@/components/PostList'), {
 });
 
 const fetcher = async (keyword: string) => {
-  const res = await fetch(`http://${window.location.host}/${keyword}`);
+  const { host, protocol } = window?.location;
+  const res = await fetch(`${protocol}//${host}/${keyword}`);
   return res.json();
 };
 
@@ -25,13 +26,9 @@ export default function PostLayout({
 }) {
   const [keyword, setKeyword] = useState(pageProps?.params ?? '');
   const params = keyword ? `?search=${keyword}` : '';
-  const { data: { data: postsData = [] } = { data: [] as Post[] } } = useSWR(
-    `api/getPostData${params}`,
-    fetcher,
-    {
-      revalidateOnMount: true,
-    },
-  );
+  const { data: { data: postsData = [] } = { data: [] as Post[] } } = useSWR(`api/getPostData${params}`, fetcher, {
+    revalidateOnMount: true,
+  });
 
   const throttleFn = debounce((value) => {
     setKeyword(value);
@@ -50,9 +47,7 @@ export default function PostLayout({
         </h1>
         <div className='relative max-w-lg'>
           {pageProps?.isHome ? (
-            <div className='text-lg leading-7 text-gray-500 dark:text-gray-400'>
-              {pageProps?.description}
-            </div>
+            <div className='text-lg leading-7 text-gray-500 dark:text-gray-400'>{pageProps?.description}</div>
           ) : (
             <input
               className=' focus-visible:outline-primary-500 focus-visible:ring-primary-500 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 dark:border-gray-900 dark:bg-gray-800 dark:text-gray-100'
