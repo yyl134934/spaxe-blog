@@ -5,6 +5,8 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Providers } from './providers';
 import Link from 'next/link';
+import Footer from '@/components/Footer';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: '二百一十三号选手',
@@ -33,27 +35,29 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html suppressHydrationWarning>
-      <body className='flex flex-col justify-center items-center'>
+    <html lang='zh-Hans' suppressHydrationWarning>
+      <body>
         <Providers>
-          <header>
-            <div className='flex w-screen items-center justify-between py-10 max-w-5xl dark:text-gray-100'>
-              <Link href={'/'}>
-                <div className='flex items-center'>
-                  <Image priority src='/logo.png' alt='logo' width={80} height={50} />
-                  <div className='font-semibold hidden sm:block text-2xl text-center h-fit'>
-                    {metadata.title as string}
+          <div className='mx-auto my-0 px-6 max-w-5xl h-screen scroll'>
+            <header>
+              <div className='flex items-center justify-between py-10 dark:text-gray-100'>
+                <Link href={'/'}>
+                  <div className='flex items-center'>
+                    <Image priority src='/logo.png' alt='logo' width={80} height={50} />
+                    <div className='font-semibold hidden sm:block text-2xl text-center h-fit'>
+                      {metadata.title as string}
+                    </div>
                   </div>
+                </Link>
+                <div className='flex flex-row items-center font text-xl mr-8'>
+                  <Nav linkData={headerNavLinks}></Nav>
+                  <ThemeSwitch />
                 </div>
-              </Link>
-              <div className='flex flex-row items-center font text-xl mr-8'>
-                <Nav linkData={headerNavLinks}></Nav>
-                <ThemeSwitch />
               </div>
-            </div>
-          </header>
-          <main>{children}</main>
-          <footer>Footer</footer>
+            </header>
+            <main>{children}</main>
+            <Footer />
+          </div>
         </Providers>
       </body>
     </html>

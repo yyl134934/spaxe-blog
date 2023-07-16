@@ -1,21 +1,22 @@
-import PostList from '@/components/PostList';
+import Loading from '@/components/Loading';
 import { getSortedPostsData } from '@/lib/posts';
-import '@/styles/main.css';
+import dynamic from 'next/dynamic';
+
+const PostList = dynamic(() => import('@/components/PostList'), {
+  loading: () => <Loading />,
+});
 
 export default function Home() {
   const postsData = getSortedPostsData();
-  console.log('🚀🐍 ~ file: page.tsx:7 ~ Home ~ postsData.length:', postsData.length);
   return (
     <div>
-      <div className='w-screen max-w-5xl py-6'>
+      <div className='space-y-2 pt-6 pb-8 md:space-y-5'>
         <div className='text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14'>
-          Latest
+          <span>最近更新</span>
         </div>
-        <div className='text-lg leading-7 text-gray-500 dark:text-gray-400'>
-          A blog created with Next.js and Tailwind.css
-        </div>
+        <div className='text-lg leading-7 text-gray-500 dark:text-gray-400'>近几个月来的更新</div>
       </div>
-      <PostList postsData={postsData}></PostList>
+      <PostList isHome={true} postsData={postsData}></PostList>
     </div>
   );
 }

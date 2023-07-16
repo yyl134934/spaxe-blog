@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.remark-code-title{
+        border-top-left-radius: 0.25rem;
+        border-top-right-radius: 0.25rem;
+        --tw-bg-opacity: 1;
+        background-color: rgb(64 64 64/var(--tw-bg-opacity));
+        padding: 0.75rem 1.25rem;
+        font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
+        font-size: .875rem;
+        line-height: 1.25rem;
+        font-weight: 700;
+        --tw-text-opacity: 1;
+        color: rgb(229 229 229/var(--tw-text-opacity));
+}
