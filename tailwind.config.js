@@ -3,7 +3,14 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 const colors = require('tailwindcss/colors');
 
 module.exports = {
-  content: ['./src/app/**/*.{js,ts,jsx,tsx,mdx}', './src/components/**/*.{js,ts,jsx,tsx,mdx}'],
+  experimental: {
+    optimizeUniversalDefaults: true,
+  },
+  content: [
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
   darkMode: 'class',
   theme: {
     extend: {
@@ -22,6 +29,9 @@ module.exports = {
       colors: {
         primary: colors.teal,
         gray: colors.neutral,
+      },
+      minWidth: {
+        sm: '16rem',
       },
       typography: (theme) => ({
         DEFAULT: {
@@ -156,5 +166,5 @@ module.exports = {
       }),
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 };
