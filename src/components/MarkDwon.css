@@ -9,11 +9,16 @@
 } */
 .markdown-toc-outline{
         padding-right: 4rem ;
-        padding-top: 2rem ;
+        padding-top: 1rem ;
         padding-bottom: 2rem ;
+        margin-left: 15px;
 }
 .markdown-toc-list{
-        list-style-type: none;
+        list-style-type:circle;
+        padding-left: 1rem;
+}
+.markdown-toc-item{
+        /* padding-left: 4rem; */
 }
 .markdown-toc-link{
         color: #14B8A6;

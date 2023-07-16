@@ -5,9 +5,6 @@ const ThemeSwitch = () => {
   const { theme, setTheme, resolvedTheme } = useTheme();
 
   const hasDark = theme === 'dark' || resolvedTheme === 'dark';
-
-  console.log('🚀🐍 ~ file: ThemeSwitch.tsx:9 ~ handleToggle ~ theme:', theme);
-
   const handleToggle = () => {
     setTheme(hasDark ? 'light' : 'dark');
   };

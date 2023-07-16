@@ -1,11 +1,8 @@
 import Link from 'next/link';
 
-const Tag = ({ key, tag }: { key: string; tag: string }) => {
+const Tag = ({ tag }: { tag: string }) => {
   return (
-    <div
-      key={key}
-      className='mr-3 text-sm font-medium uppercase text-primary-500 hover:text-primary-600 dark:hover:text-primary-400'
-    >
+    <div className='mr-3 text-sm font-medium uppercase text-primary-500 hover:text-primary-600 dark:hover:text-primary-400'>
       <Link href={`/tags/${tag}`}>{tag}</Link>
     </div>
   );
