@@ -25,6 +25,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     res.status(200).json(createResposeData(200, data));
   } catch (error) {
     const { status } = error as APIResponseError;
-    res.status(status).json(createResposeData(status, error));
+    res.status(status).json(createResposeData(status, error as any));
   }
 }

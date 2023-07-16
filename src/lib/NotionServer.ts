@@ -39,8 +39,8 @@ export default class NotionService {
       database_id: database,
     });
 
-    return response.results;
-    // return response.results.map((item) => NotionService._transformer(item));
+    // return response.results;
+    return response.results.map((item) => NotionService._transformer(item));
   }
 
   /**
