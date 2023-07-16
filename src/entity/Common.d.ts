@@ -11,3 +11,7 @@ export interface Post {
   content: string;
   [key: string]: any;
 }
+
+export interface Tag {
+  [key: string]: number;
+}
