@@ -15,3 +15,10 @@
         --tw-text-opacity: 1;
         color: rgb(229 229 229/var(--tw-text-opacity));
 }
+
+.clipboard{
+        position: relative;
+}
+.clipboard:hover .copy-button{
+        display: block;
+}

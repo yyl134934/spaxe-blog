@@ -13,9 +13,7 @@ const ListItem = ({ post, isHome }: { post: Post; isHome?: boolean }) => {
   return (
     <div className={(isHome ? 'py-12' : 'py-4') + ' flex flex-col sm:flex-row'}>
       <div className='w-64 min-w-sm'>
-        <p className='text-base font-medium leading-6 text-gray-500 dark:text-gray-400 min-w-full'>
-          {post.date}
-        </p>
+        <p className='text-base font-medium leading-6 text-gray-500 dark:text-gray-400 min-w-full'>{post.date}</p>
       </div>
 
       <div className='space-y-5 xl:col-span-3 overflow-hidden'>

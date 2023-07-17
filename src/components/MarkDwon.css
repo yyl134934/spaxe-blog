@@ -9,8 +9,8 @@
 } */
 .markdown-toc-outline{
         padding-right: 4rem ;
-        padding-top: 1rem ;
-        padding-bottom: 2rem ;
+        /* padding-top: 1rem ;
+        padding-bottom: 2rem ; */
         margin-left: 15px;
 }
 .markdown-toc-list{

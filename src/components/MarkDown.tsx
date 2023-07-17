@@ -44,13 +44,8 @@ const Markdown = ({ content }: { content: string }) => {
     .toString();
 
   useClipboard();
-  console.log('🚀🐍 ~ file: MarkDown.tsx:47 ~ Markdown ~ useClipboard:', '渲染');
-
   return (
-    <div
-      className='markdown prose dark:prose-dark min-w-full'
-      dangerouslySetInnerHTML={{ __html: processedContent }}
-    />
+    <div className='markdown prose dark:prose-dark min-w-full' dangerouslySetInnerHTML={{ __html: processedContent }} />
   );
 };
 

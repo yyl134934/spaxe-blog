@@ -33,6 +33,9 @@ module.exports = {
       minWidth: {
         sm: '16rem',
       },
+      translate: {
+        self: '50%',
+      },
       typography: (theme) => ({
         DEFAULT: {
           css: {
