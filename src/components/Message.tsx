@@ -1,3 +1,7 @@
+import Image from 'next/image';
+import { useEffect } from 'react';
+import { Root, createRoot } from 'react-dom/client';
+
 type MessageType = 'info' | 'success' | 'warn' | 'error';
 
 type Message = {
@@ -14,40 +18,51 @@ type MessageOptions = {
   maxCount?: number;
 };
 
+type UnitOfWork = { type: MessageType; msg: string };
+
+type BaseMessageProps = {
+  type: MessageType;
+  msg: string;
+};
+
+type MessageContainer = {
+  render: (unitOfWork: UnitOfWork) => void;
+  unmount: () => void;
+  destroy: () => void;
+};
+
+type Queues<T> = {
+  push: (msg: T) => void;
+  next: () => T | undefined;
+  hasFull: () => boolean;
+  isEmpty: () => boolean;
+  queues: T[];
+};
+
 /**
  * 配置
  * @param maxTimeToLive 消息最大存活时间(s)
  * @returns
  */
-function messageConfig({ maxTimeToLive, maxCount }: MessageOptions): MessageConfig {
+function messageConfig(props?: MessageOptions): MessageConfig {
+  const { maxTimeToLive, maxCount } = props ?? {};
+
   return { maxTimeToLive: maxTimeToLive ?? 3 * 1000, maxCount: maxCount ?? 3 };
 }
 
-const config = messageConfig({ maxCount: 4 });
-
-type Queues<T> = {
-  push: (msg: T) => void;
-  next: () => T | undefined;
-  nextAsnyc: () => T | undefined;
-  movePointer: () => void;
-  hasFull: () => boolean;
-  hasFullAsync: () => boolean;
-  isEmpty: () => boolean;
-};
+let config = messageConfig();
 
 function queues<T>(maxCount: number = 3): Queues<T> {
   const queues: T[] = [];
-  let pointer: number = -1;
 
   /**
    * 入队
    * @param msg
    */
   const push = (msg: T) => {
-    if (pointer >= maxCount) {
+    if (queues.length >= maxCount) {
       return;
     }
-    pointer++;
     queues.push(msg);
   };
 
@@ -57,29 +72,9 @@ function queues<T>(maxCount: number = 3): Queues<T> {
    */
   const next = () => {
     if (queues.length > 0) {
-      pointer--;
       return queues.shift()!;
     }
     return undefined;
-  };
-
-  /**
-   * 异步出队
-   * @returns
-   */
-  const nextAsnyc = () => {
-    if (queues.length > 0) {
-      return queues.shift()!;
-    }
-    return undefined;
-  };
-
-  /**
-   * 用于异步时移动指针
-   * @returns
-   */
-  const movePointer = () => {
-    pointer--;
   };
 
   /**
@@ -88,14 +83,6 @@ function queues<T>(maxCount: number = 3): Queues<T> {
    */
   const hasFull = () => {
     return queues.length >= maxCount;
-  };
-
-  /**
-   * 队列是否已满
-   * @returns
-   */
-  const hasFullAsync = () => {
-    return pointer >= maxCount;
   };
 
   /**
@@ -109,33 +96,21 @@ function queues<T>(maxCount: number = 3): Queues<T> {
   return {
     push,
     next,
-    nextAsnyc,
-    movePointer,
     hasFull,
-    hasFullAsync,
     isEmpty,
+    queues,
   };
 }
 
-const messageQueues = queues<string>(config.maxCount);
-
-type MessageBox = {
-  initailize: () => void;
-  push: (ele: HTMLElement) => void;
-  remove: (ele: HTMLElement) => void;
-  destroy: () => void;
-};
-
-function messageBox(): MessageBox {
-  let box: HTMLDivElement | null = null;
-  let isInitailized = false;
+function messageContainer(): MessageContainer {
+  let root: Root | null = null;
+  const messageQueues = queues<UnitOfWork>(config.maxCount);
 
   const create = () => {
     // 创建 <div> 元素
     var divElement = document.createElement('div');
     // 添加 class 属性
     divElement.classList.add(
-      'msg-box',
       'fixed',
       'top-10',
       'right-1/2',
@@ -150,95 +125,73 @@ function messageBox(): MessageBox {
   };
 
   const initailize = () => {
-    box = create();
-    document.body.appendChild(box);
-
-    isInitailized = true;
+    const container = create();
+    root = createRoot(container);
+    document.body.appendChild(container);
   };
 
-  const push = (ele: HTMLElement) => {
-    isInitailized || initailize();
+  function convertToComponents(queues: UnitOfWork[]) {
+    const renderQueues = queues.map((nextUnitOfWork, index) => {
+      return <BaseMessage key={nextUnitOfWork.msg + nextUnitOfWork.type + index} {...nextUnitOfWork} />;
+    });
 
-    box?.appendChild(ele);
+    return renderQueues;
+  }
+
+  const render = (unitOfWork: UnitOfWork) => {
+    if (!root) {
+      initailize();
+    }
+
+    messageQueues.push(unitOfWork);
+    const nodes = convertToComponents(messageQueues.queues);
+    root?.render(nodes);
   };
 
-  const remove = (ele: HTMLElement) => {
-    isInitailized || initailize();
+  const unmount = () => {
+    if (!root) {
+      initailize();
+    }
 
-    box?.removeChild(ele);
+    messageQueues.next();
+    const nodes = convertToComponents(messageQueues.queues);
+    root?.render(nodes);
   };
 
-  const destroy = () => {
-    box && document.body.removeChild(box);
-  };
+  const destroy = () => {};
 
   return {
-    initailize,
-    push,
-    remove,
+    render,
+    unmount,
     destroy,
   };
 }
 
-const box = messageBox();
+const container = messageContainer();
 
-type ClassMap = {
-  [P in MessageType]: string[];
-};
+function BaseMessage(props: BaseMessageProps) {
+  const { type, msg } = props;
 
-const classMap: ClassMap = {
-  info: ['消息', 'bg-blue-400'],
-  success: ['成功', 'bg-green-400'],
-  warn: ['警告', 'bg-yellow-400'],
-  error: ['错误', 'bg-red-400'],
-};
+  useEffect(() => {
+    setTimeout(() => {
+      container.unmount();
+    }, config.maxTimeToLive); // 设置消息最大存消息时间
+  }, []);
 
-function createMessageElement(msgInfo: string, type: MessageType) {
-  // 创建 <div> 元素
-  const divElement = document.createElement('div');
-
-  const [tag, bgColor] = classMap[type];
-
-  // 添加 class 属性
-  divElement.classList.add(
-    bgColor,
-    'text-white',
-    'px-4',
-    'py-1',
-    'rounded-sm',
-    'shadow-md',
-    'pointer-events-auto',
-    'max-w-sm',
+  return (
+    <div className='bg-white text-black px-4 py-1 rounded-sm shadow-md pointer-events-auto max-w-sm flex flex-row space-x-2'>
+      <Image src={`/message/${type}.svg`} alt='' width={20} height={20} />
+      <span className='text-sm font-medium'>{msg}</span>
+    </div>
   );
-
-  // 设置内容
-  divElement.textContent = `${tag}：${msgInfo}`;
-
-  return divElement;
 }
 
-type UnitOfWork = { type: MessageType; msg: string };
-
-function loopWork(unitOfWork: UnitOfWork) {
-  // 入队
-  messageQueues.push(unitOfWork.msg);
-
-  while (!messageQueues.isEmpty() && !messageQueues.hasFullAsync()) {
-    // 创建message节点
-    const currentMsg = messageQueues.nextAsnyc() ?? '';
-    const msgElement = createMessageElement(currentMsg, unitOfWork.type);
-    box.push(msgElement);
-
-    setTimeout(() => {
-      box.remove(msgElement);
-      messageQueues.movePointer();
-    }, config.maxTimeToLive); // 设置消息最大存消息时间
-  }
+export function setConfig(options: MessageOptions) {
+  config = messageConfig(options);
 }
 
 const create = (): Message => {
   const list: MessageType[] = ['info', 'success', 'warn', 'error'];
-  let message: Message | {} = {};
 
   const fn = (type: MessageType) => (msg: string) => {
     const unitOfWork: UnitOfWork = {
@@ -246,14 +199,10 @@ const create = (): Message => {
       msg,
     };
 
-    loopWork(unitOfWork);
+    container.render(unitOfWork);
   };
 
-  for (const type of list) {
-    message = { [type]: fn(type), ...message };
-  }
-
-  return message as Message;
+  return list.reduce((msg: Partial<Message>, type) => ((msg[type] = fn(type)), msg), {}) as Message;
 };
 
 const message: Message = create();
