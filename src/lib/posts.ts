@@ -12,7 +12,7 @@ export function getSortedPostsData(): Post[] {
     //TODO Remove ".md" from file name to get id
     const id = fileName.replace(/\.md$/, '');
     return getPostDataById(id);
-  });
+  }) as Post[];
 
   //TODO Sort posts by date
   return allPostData.sort((a: Post, b: Post) => {
@@ -43,9 +43,13 @@ export function getAllPostIds(): PostId[] {
   });
 }
 
-export function getPostDataById(id: string): Post {
+export function getPostDataById(id: string): Post | null {
   //TODO Get file names under /posts
   const fullPath = path.join(postsDirectory, `${id}.md`);
+  const isExist = fs.existsSync(fullPath);
+  if (!isExist) {
+    return null;
+  }
   const fileContents = fs.readFileSync(fullPath, 'utf8');
 
   //TODO Use gray-matter to parse the post metadata section
@@ -79,8 +83,7 @@ export const getPostDataByKeyword = (keyword: string): Post[] => {
   const allPostData = getSortedPostsData();
   return allPostData.filter((post) => {
     const { title, description, tags } = post;
-    const hasInclude =
-      title?.includes(keyword) || description?.includes(keyword) || tags?.includes(keyword);
+    const hasInclude = title?.includes(keyword) || description?.includes(keyword) || tags?.includes(keyword);
     return hasInclude;
   });
 };
@@ -104,11 +107,7 @@ export const getTagsData = (): Tag => {
  * @param {string} [ret_msg] - 返回消息（可选）
  * @returns {{ code: number, ret_msg: string, data: T }} 部分响应数据对象
  */
-export const createResposeData = <T>(
-  code: number | string,
-  data?: Partial<T>,
-  ret_msg?: string,
-): ResponseData<T> => {
+export const createResposeData = <T>(code: number | string, data?: Partial<T>, ret_msg?: string): ResponseData<T> => {
   switch (code) {
     case 200:
       return { code: 200, ret_msg: ret_msg ?? '查询成功!', data: data ?? {} };
