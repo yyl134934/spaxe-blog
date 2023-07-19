@@ -45,7 +45,7 @@ const Markdown = ({ content }: { content: string }) => {
 
   useClipboard();
   return (
-    <div className='markdown prose dark:prose-dark min-w-full' dangerouslySetInnerHTML={{ __html: processedContent }} />
+    <div className='markdown prose dark:prose-dark max-w-none' dangerouslySetInnerHTML={{ __html: processedContent }} />
   );
 };
 
