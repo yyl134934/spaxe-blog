@@ -4,7 +4,7 @@ import headerNavLinks from '@/data/headerNavLinks';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Providers } from './providers';
-import Link from 'next/link';
+import Link from '@/components/Link';
 import Footer from '@/components/Footer';
 import './globals.css';
 
@@ -41,7 +41,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           <div className='mx-auto my-0 px-6 max-w-5xl h-screen scroll'>
             <header>
               <div className='flex items-center justify-between py-10 dark:text-gray-100'>
-                <Link href={'/'}>
+                <Link href={'/'} className='!'>
                   <div className='flex items-center'>
                     <Image priority src='/logo.png' alt='logo' width={80} height={50} />
                     <div className='font-semibold hidden sm:block text-2xl text-center h-fit'>

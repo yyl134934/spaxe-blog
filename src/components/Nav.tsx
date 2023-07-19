@@ -1,6 +1,6 @@
 'use client';
 import { HeaderLinkProps } from '@/entity/Common';
-import Link from 'next/link';
+import Link from '@/components/Link';
 import { useCallback, useEffect, useState } from 'react';
 
 const useTouchMoveEvent = (fn: (event: any) => void, ready?: boolean) => {

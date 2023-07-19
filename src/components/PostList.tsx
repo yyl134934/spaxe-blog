@@ -1,15 +1,8 @@
-'use client';
-import { usePathname } from 'next/navigation';
 import { Post } from '@/entity/Common';
-import Link from 'next/link';
+import Link from '@/components/Link';
 import Tag from './Tag';
 
-const ListItem = ({ post, isHome }: { post: Post; isHome?: boolean }) => {
-  const pathname = usePathname();
-  const redirectPath = (subPath = '') => {
-    return pathname === '/' ? `blog/${subPath}` : `../blog/${subPath}`;
-  };
-
+const ListItem = ({ post, isHome, path = 'blog' }: { post: Post; isHome?: boolean; path?: string }) => {
   return (
     <div className={(isHome ? 'py-12' : 'py-4') + ' flex flex-col sm:flex-row'}>
       <div className='w-64 min-w-sm'>
@@ -19,7 +12,9 @@ const ListItem = ({ post, isHome }: { post: Post; isHome?: boolean }) => {
       <div className='space-y-5 xl:col-span-3 overflow-hidden'>
         <div className='space-y-2'>
           <h2 className='text-2xl font-bold leading-8 tracking-tight my-0'>
-            <Link href={redirectPath(post?.id)}>{post?.title}</Link>
+            <Link className='!' href={`${path}/${post?.id}`}>
+              {post?.title}
+            </Link>
           </h2>
 
           <div className='flex flex-wrap m-0'>
@@ -32,23 +27,14 @@ const ListItem = ({ post, isHome }: { post: Post; isHome?: boolean }) => {
           {post?.description}
         </p>
         <div className='text-base font-medium leading-6'>
-          {isHome ? (
-            <Link
-              className=' text-primary-500 hover:text-primary-600 dark:hover:text-primary-400'
-              href={redirectPath(post?.id)}
-            >
-              阅读更多→
-            </Link>
-          ) : (
-            ''
-          )}
+          {isHome ? <Link href={`blog/${post?.id}`}>阅读更多→</Link> : ''}
         </div>
       </div>
     </div>
   );
 };
 
-const List = ({ postsData, isHome }: { postsData: Post[]; isHome?: boolean }) => {
+const List = ({ isHome, children }: { isHome?: boolean; children: React.ReactNode }) => {
   return (
     <div
       className={
@@ -56,11 +42,11 @@ const List = ({ postsData, isHome }: { postsData: Post[]; isHome?: boolean }) =>
         ' dark:divide-gray-700 border-t border-gray-200 dark:border-gray-700'
       }
     >
-      {postsData.map((post) => (
-        <ListItem isHome={isHome} post={post} key={post?.id} />
-      ))}
+      {children}
     </div>
   );
 };
+
+List.Item = ListItem;
 
 export default List;

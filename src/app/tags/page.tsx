@@ -1,6 +1,6 @@
 import { getTagsData } from '@/lib/posts';
 import { Metadata, ResolvingMetadata } from 'next';
-import Link from 'next/link';
+import Link from '@/components/Link';
 
 export async function generateMetadata(
   { params, searchParams }: { params: { slug: string }; searchParams: any },
