@@ -15,21 +15,18 @@ type SearchLayoutProps = {
 
 const fetcher = async (keyword: string) => {
   const { host, protocol } = window?.location;
-  const res = await fetch(`${protocol}//${host}/${keyword}`, { cache: 'no-store' });
+  const res = await fetch(`${protocol}//${host}/${keyword}`);
   return res.json();
 };
 
 export default function SearchLayout({ children, pageProps }: SearchLayoutProps) {
-  const { keyword, onSearch } = useSearch();
+  const { params: initial, ...rest } = pageProps ?? { params: '' };
+  const { keyword, onSearch } = useSearch(initial);
 
   const params = keyword ? `?search=${keyword}` : '';
   const { data: { data: postsData = [] } = { data: [] as Post[] } } = useSWR(`api/getPostData${params}`, fetcher, {
     revalidateOnMount: true,
   });
 
-  return (
-    <PostLayout {...pageProps} pageProps={{ data: postsData, onSearch }}>
-      {children}
-    </PostLayout>
-  );
+  return <PostLayout pageProps={{ data: postsData, onSearch, ...rest }}>{children}</PostLayout>;
 }

@@ -6,8 +6,8 @@ type Search = {
   onSearch: (e: any) => void;
 };
 
-export const useSearch = (): Search => {
-  const [keyword, setKeyword] = useState('');
+export const useSearch = (initial: string = ''): Search => {
+  const [keyword, setKeyword] = useState(initial);
 
   const throttleFn = debounce((value) => {
     setKeyword(value);
