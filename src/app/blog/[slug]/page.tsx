@@ -5,6 +5,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 import dynamic from 'next/dynamic';
 import MarkDownLoading from '@/components/MarkDownLoading';
 import { notFound } from 'next/navigation';
+import siteMetadata from '@/data/siteMetadata';
 
 const MarkDown = dynamic(() => import('@/components/MarkDown'), {
   loading: () => <MarkDownLoading />,
@@ -25,8 +26,10 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const data = getPostDataById(params.slug);
+
   return {
     title: data?.title ?? '404',
+    description: ` ${data?.title}-${params.slug}-${data?.tags}-${data?.description}-${siteMetadata.author}`,
   };
 }
 

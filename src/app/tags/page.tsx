@@ -1,13 +1,15 @@
 import { getTagsData } from '@/lib/posts';
 import { Metadata, ResolvingMetadata } from 'next';
 import Link from '@/components/Link';
+import siteMetadata from '@/data/siteMetadata';
 
 export async function generateMetadata(
   { params, searchParams }: { params: { slug: string }; searchParams: any },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   return {
-    title: '标签 - 213号',
+    title: `标签 - ${siteMetadata.author}`,
+    description: `标签- ${siteMetadata.description} - ${siteMetadata.author}`,
   };
 }
 

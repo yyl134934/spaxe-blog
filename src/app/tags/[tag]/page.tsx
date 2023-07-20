@@ -1,5 +1,6 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import SearchLayout from '@/layout/SearchLayout/SearchLayout';
+import siteMetadata from '@/data/siteMetadata';
 
 // export function generateStaticParams() {
 //   const tags = getTagsData();
@@ -13,7 +14,8 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const decodeTag = decodeURIComponent(params?.tag).toLocaleUpperCase();
   return {
-    title: `${decodeTag} - 213号`,
+    title: `${decodeTag} - ${siteMetadata.author}`,
+    description: `${decodeTag} - ${siteMetadata.description} - ${siteMetadata.author}`,
   };
 }
 

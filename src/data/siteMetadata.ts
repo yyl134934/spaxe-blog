@@ -1,6 +1,6 @@
 const siteMetadata = {
   title: 'Spaxe Blog',
-  author: 'Spaxe',
+  author: '213号',
   headerTitle: 'SpaxeBlog',
   description: 'A blog created with Next.js and Tailwind.css.一个基于Next.js和Tailwind.css的博客',
   language: 'zh-cn',
