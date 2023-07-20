@@ -1,6 +1,6 @@
 import ClipboardJS from 'clipboard';
 import { useEffect } from 'react';
-import message from './Message';
+import message from '../Message';
 
 function useClipboard() {
   const clipboard = () => {

@@ -1,7 +1,9 @@
 import { getTagsData } from '@/lib/posts';
 import { Metadata, ResolvingMetadata } from 'next';
-import Link from '@/components/Link';
 import siteMetadata from '@/data/siteMetadata';
+import dynamic from 'next/dynamic';
+
+const Link = dynamic(() => import('@/components/Link'));
 
 export async function generateMetadata(
   { params, searchParams }: { params: { slug: string }; searchParams: any },

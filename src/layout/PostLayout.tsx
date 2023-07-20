@@ -1,11 +1,13 @@
 import { Post } from '@/entity/Common';
-import List from '@/components/PostList';
+import dynamic from 'next/dynamic';
+
+const List = dynamic(() => import('@/components/list/List'));
+const ListItem = dynamic(() => import('@/components/list/ListItem'));
 
 type PostLayoutProps = {
   children?: React.ReactNode;
   pageProps?: {
     title?: string;
-    params?: any;
     isHome?: boolean;
     description?: string;
     data: Post[];
@@ -19,7 +21,7 @@ export default function PostLayout({ children, pageProps }: PostLayoutProps) {
     return (
       <List isHome={pageProps?.isHome}>
         {pageProps?.data.map((post: Post) => (
-          <List.Item post={post} key={post?.id} path={pageProps?.path} isHome={pageProps?.isHome} />
+          <ListItem post={post} key={post?.id} path={pageProps?.path} isHome={pageProps?.isHome} />
         ))}
       </List>
     );

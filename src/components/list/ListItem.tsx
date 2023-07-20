@@ -1,8 +1,7 @@
 import { Post } from '@/entity/Common';
 import Link from '@/components/Link';
-import Tag from './Tag';
-
-const ListItem = ({ post, isHome, path = 'blog' }: { post: Post; isHome?: boolean; path?: string }) => {
+import Tag from '../Tag';
+export const Item = ({ post, isHome, path = 'blog' }: { post: Post; isHome?: boolean; path?: string }) => {
   return (
     <div className={(isHome ? 'py-12' : 'py-4') + ' flex flex-col sm:flex-row'}>
       <div className='w-64 min-w-sm'>
@@ -34,19 +33,4 @@ const ListItem = ({ post, isHome, path = 'blog' }: { post: Post; isHome?: boolea
   );
 };
 
-const List = ({ isHome, children }: { isHome?: boolean; children: React.ReactNode }) => {
-  return (
-    <div
-      className={
-        (isHome ? 'divide-y divide-gray-200' : '') +
-        ' dark:divide-gray-700 border-t border-gray-200 dark:border-gray-700'
-      }
-    >
-      {children}
-    </div>
-  );
-};
-
-List.Item = ListItem;
-
-export default List;
+export default Item;

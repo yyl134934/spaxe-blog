@@ -1,16 +1,15 @@
-import { getAllPostIds, getAdjacentPostData, getPostDataById } from '@/lib/posts';
 import React from 'react';
-import Link from '@/components/Link';
 import { Metadata, ResolvingMetadata } from 'next';
 import dynamic from 'next/dynamic';
-import MarkDownLoading from '@/components/MarkDownLoading';
 import { notFound } from 'next/navigation';
+import { getAllPostIds, getAdjacentPostData, getPostDataById } from '@/lib/posts';
+import MarkDownLoading from '@/components/markdown/Loading';
 import siteMetadata from '@/data/siteMetadata';
 
-const MarkDown = dynamic(() => import('@/components/MarkDown'), {
+const Link = dynamic(() => import('@/components/Link'));
+const MarkDown = dynamic(() => import('@/components/markdown/MarkDown'), {
   loading: () => <MarkDownLoading />,
 });
-
 const Author = dynamic(() => import('@/components/Author'), {});
 const ScrollTop = dynamic(() => import('@/components/ScrollToTop'), {});
 const Tag = dynamic(() => import('@/components/Tag'), {});

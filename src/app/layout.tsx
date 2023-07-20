@@ -1,12 +1,16 @@
-import Nav from '@/components/Nav';
-import ThemeSwitch from '@/components/ThemeSwitch';
-import headerNavLinks from '@/data/headerNavLinks';
+import dynamic from 'next/dynamic';
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import headerNavLinks from '@/data/headerNavLinks';
 import { Providers } from './providers';
-import Link from '@/components/Link';
-import Footer from '@/components/Footer';
 import './globals.css';
+
+const Nav = dynamic(() => import('@/components/Nav'));
+const ThemeSwitch = dynamic(() => import('@/components/ThemeSwitch'), {
+  ssr: false,
+});
+const Link = dynamic(() => import('@/components/Link'));
+const Footer = dynamic(() => import('@/components/Footer'));
 
 export const metadata: Metadata = {
   title: '二百一十三号选手',
@@ -23,9 +27,9 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: '二百一十三号选手的博客',
-    images: `https://og-image.vercel.app/${encodeURI(
-      '二百一十三号选手的博客',
-    )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`,
+    // images: `https://og-image.vercel.app/${encodeURI(
+    //   '二百一十三号选手的博客',
+    // )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`,
   },
   twitter: {
     card: 'summary_large_image',
@@ -43,13 +47,13 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
               <div className='flex items-center justify-between py-10 dark:text-gray-100'>
                 <Link href={'/'} className='!'>
                   <div className='flex items-center'>
-                    <Image priority src='/logo.png' alt='logo' width={80} height={50} />
+                    <Image priority quality={80} src='/logo.png' alt='logo' width={80} height={50} />
                     <div className='font-semibold hidden sm:block text-2xl text-center h-fit'>
                       {metadata.title as string}
                     </div>
                   </div>
                 </Link>
-                <div className='flex flex-row items-center font text-xl mr-8'>
+                <div className='flex flex-row items-center font text-xl mr-8 md:min-w-[21rem] md:justify-start'>
                   <Nav linkData={headerNavLinks}></Nav>
                   <ThemeSwitch />
                 </div>

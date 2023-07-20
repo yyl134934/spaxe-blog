@@ -20,7 +20,7 @@ import typescript from 'highlight.js/lib/languages/typescript'; //typescript代�
 import rehypeStringify from 'rehype-stringify';
 // 代码高亮——样式
 import 'highlight.js/styles/atom-one-dark.css';
-import './MarkDwon.css';
+import './MarkDown.css';
 
 const Markdown = ({ content }: { content: string }) => {
   const processedContent = unified()

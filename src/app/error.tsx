@@ -1,7 +1,6 @@
 'use client';
 import Link from '@/components/Link';
 import { useRouter } from 'next/navigation';
-
 import { useEffect, useState } from 'react';
 
 function useError() {
