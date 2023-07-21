@@ -22,5 +22,5 @@ export async function generateMetadata(
 export default function TagAbout({ params }: { params: { tag: string } }) {
   const decodeTag = decodeURIComponent(params?.tag).toLocaleUpperCase();
 
-  return <SearchLayout pageProps={{ params: params?.tag, title: decodeTag, path: '../blog' }}></SearchLayout>;
+  return <SearchLayout pageProps={{ initialKeyword: params?.tag, title: decodeTag, path: '../blog' }}></SearchLayout>;
 }

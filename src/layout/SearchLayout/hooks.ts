@@ -8,6 +8,7 @@ type Search = {
 
 export const useSearch = (initial: string = ''): Search => {
   const [keyword, setKeyword] = useState(initial);
+  console.log('🚀🐍 ~ file: hook.ts:11 ~ useSearch ~ initial:', initial);
 
   const throttleFn = debounce((value) => {
     setKeyword(value);
