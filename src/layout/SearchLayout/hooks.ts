@@ -1,15 +1,16 @@
+import { Post } from '@/entity/Common';
+import { ResponseData } from '@/entity/Response';
+import { useInfinite } from '@/hooks/useInfinite';
 import { debounce } from '@/utils/debounce';
 import { useState } from 'react';
 
-type Search = {
+interface Search {
   keyword: string;
   onSearch: (e: any) => void;
-};
+}
 
 export const useSearch = (initial: string = ''): Search => {
   const [keyword, setKeyword] = useState(initial);
-  console.log('🚀🐍 ~ file: hook.ts:11 ~ useSearch ~ initial:', initial);
-
   const throttleFn = debounce((value) => {
     setKeyword(value);
   }, 500);
@@ -23,4 +24,9 @@ export const useSearch = (initial: string = ''): Search => {
   };
 
   return { keyword: keyword, onSearch: handleChange };
+};
+
+export const usePostsQuery = (queryParams?: Record<string, any>) => {
+  const pathname = 'api/getPostData';
+  return useInfinite<Post>(pathname, queryParams);
 };

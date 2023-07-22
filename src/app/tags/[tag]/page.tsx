@@ -1,12 +1,13 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import SearchLayout from '@/layout/SearchLayout/SearchLayout';
 import siteMetadata from '@/data/siteMetadata';
+import { getTagsData } from '@/lib/posts';
 
-// export function generateStaticParams() {
-//   const tags = getTagsData();
+export function generateStaticParams() {
+  const tags = getTagsData();
 
-//   return Object.keys(tags).map((tag) => ({ params: { tag: tag } }));
-// }
+  return Object.keys(tags).map((tag) => ({ params: { tag: tag } }));
+}
 
 export async function generateMetadata(
   { params, searchParams }: { params: { tag: string }; searchParams: any },
@@ -21,6 +22,5 @@ export async function generateMetadata(
 
 export default function TagAbout({ params }: { params: { tag: string } }) {
   const decodeTag = decodeURIComponent(params?.tag).toLocaleUpperCase();
-
-  return <SearchLayout pageProps={{ initialKeyword: params?.tag, title: decodeTag, path: '../blog' }}></SearchLayout>;
+  return <SearchLayout pageProps={{ tag: params?.tag, title: decodeTag, path: '../blog' }}></SearchLayout>;
 }

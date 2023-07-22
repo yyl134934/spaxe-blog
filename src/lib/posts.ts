@@ -4,11 +4,6 @@ import matter from 'gray-matter';
 import { Post, Tag } from '@/entity/Common';
 import { ResponseData } from '@/entity/Response';
 
-type QueryResult = {
-  data: Post[];
-  isEnd: boolean;
-};
-
 const postsDirectory = path.join(process.cwd(), 'posts');
 
 export function getSortedPostsData(): Post[] {
@@ -33,14 +28,14 @@ export function getSortedPostsData(): Post[] {
   });
 }
 
-export function getPostDataOfPagination(page: number = 1, offset: number = 5): QueryResult {
+export function getPostDataOfPagination(page: number = 1, offset: number = 5): Post[] {
   const sortedPostData = getSortedPostsData();
   const total = sortedPostData.length;
   const start = (page - 1) * offset;
   const isEnd = page * offset > total;
   const end = isEnd ? total : page * offset;
-  //TODO Pages
-  return { data: sortedPostData.slice(start, end), isEnd };
+  // Pages
+  return sortedPostData.slice(start, end);
 }
 
 interface PostId {
@@ -94,16 +89,38 @@ export function getAdjacentPostData(curPost: Post): (Post | null)[] {
   return [prev, next];
 }
 
-export const getPostDataByKeyword = (keyword: string, page?: number, offset?: number): QueryResult => {
-  const { data } = getPostDataOfPagination(page, offset);
-  const keyData = data.filter((post) => {
+export const getPostDataByKeyword = (keyword: string, page?: number, offset?: number): Post[] => {
+  const data = getPostDataOfPagination(page, offset);
+  return data.filter((post) => {
     const { title, description, tags } = post;
     const hasInclude = title?.includes(keyword) || description?.includes(keyword) || tags?.includes(keyword);
     return hasInclude;
   });
-  const isEnd = keyData.length <= (page ?? 0) * (offset ?? 0);
+};
 
-  return { data: keyData, isEnd };
+const ignoreCase = (text?: string, keyword: string = ''): boolean => {
+  return text?.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()) ?? false;
+};
+
+export const getPostDataByKeywordAndTag = (
+  tag: string = '',
+  keyword: string = '',
+  page?: number,
+  offset?: number,
+): Post[] => {
+  const data = getPostDataOfPagination(page, offset);
+
+  if (!tag && !keyword) {
+    return data;
+  }
+
+  return data.filter((post) => {
+    const { title, description, tags } = post;
+    const hasInclude =
+      ignoreCase(tags, tag) &&
+      (ignoreCase(title, keyword) || ignoreCase(description, keyword) || ignoreCase(tags, keyword));
+    return hasInclude;
+  });
 };
 
 export const getTagsData = (): Tag => {
@@ -115,30 +132,4 @@ export const getTagsData = (): Tag => {
     }
     return tagObj;
   }, {} as any);
-};
-
-type createProps<T> = {
-  code: number | string;
-  data?: Partial<T>;
-  ret_msg?: string;
-  [key: string]: any;
-};
-
-/**
- * 创建部分响应数据
- * @template T
- * @param {number | string} code - 状态码
- * @param {T} [data] - 数据（可选）
- * @param {string} [ret_msg] - 返回消息（可选）
- * @returns {ResponseData<T>} 部分响应数据对象
- */
-export const createResposeData = <T>({ code = 200, data = {}, ret_msg, ...rest }: createProps<T>): ResponseData<T> => {
-  switch (code) {
-    case 200:
-      return { code: 200, ret_msg: ret_msg ?? '查询成功!', data: data ?? {}, ...rest };
-    case 400:
-      return { code: 400, ret_msg: ret_msg ?? '缺少必要参数，请检查接口调用！', data: {}, ...rest };
-    default:
-      return { code: 500, ret_msg: ret_msg ?? '查询数据不存在！', data: {}, ...rest };
-  }
 };

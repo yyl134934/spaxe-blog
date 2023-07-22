@@ -1,7 +1,7 @@
-export type HeaderLinkProps = {
+export interface HeaderLinkProps {
   href: string;
   title: string;
-};
+}
 export interface Post {
   id: string;
   date?: string;

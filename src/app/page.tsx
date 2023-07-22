@@ -5,7 +5,7 @@ import { getPostDataOfPagination } from '@/lib/posts';
 const Link = dynamic(() => import('@/components/Link'));
 
 export default function Home() {
-  const { data } = getPostDataOfPagination();
+  const data = getPostDataOfPagination();
   return (
     <PostLayout pageProps={{ data: data, isHome: true, title: '最近更新', description: '近几个月来的更新' }}>
       <div className='flex justify-end py-4'>

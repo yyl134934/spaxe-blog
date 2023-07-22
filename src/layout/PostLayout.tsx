@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 const List = dynamic(() => import('@/components/list/List'));
 const ListItem = dynamic(() => import('@/components/list/ListItem'));
 
-type PostLayoutProps = {
+interface PostLayoutProps {
   children?: React.ReactNode;
   pageProps?: {
     title?: string;
@@ -14,7 +14,7 @@ type PostLayoutProps = {
     onSearch?: (e: any) => void;
     path?: string;
   };
-};
+}
 
 export default function PostLayout({ children, pageProps }: PostLayoutProps) {
   const renderList = () => {
