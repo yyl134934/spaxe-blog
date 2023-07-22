@@ -1,4 +1,3 @@
-import { Post } from '@/entity/Common';
 import { ResponseData } from '@/entity/Response';
 import { getPostDataByKeywordAndTag } from '@/lib/posts';
 import { NextRequest, NextResponse } from 'next/server';
