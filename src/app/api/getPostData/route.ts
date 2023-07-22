@@ -19,32 +19,25 @@ const enum ResponseCodes {
 const getDefaultRetMsg = (code: number | string): string => {
   switch (code) {
     case ResponseCodes.OK:
-      return '查询成功!';
+      return '查询成功！';
     case ResponseCodes.CLIENT_ERROR:
       return '缺少必要参数，请检查接口调用！';
     case ResponseCodes.SERVER_ERROR:
       return '查询数据不存在！';
     default:
-      return '查询成功!';
+      return '查询成功！';
   }
 };
 
-/**
- * 创建部分响应数据
- * @template T
- * @param {number | string} code - 状态码
- * @param {T} [data] - 数据（可选）
- * @param {string} [ret_msg] - 返回消息（可选）
- * @returns {ResponseData<T>} 部分响应数据对象
- */
-export const createResposeData = <T>({
-  code = ResponseCodes.OK,
-  data = [],
-  ret_msg,
-  ...rest
-}: Partial<ResponseData<T>>): ResponseData<T> => {
+interface createProps {
+  code: number;
+  data?: any[];
+  ret_msg?: string;
+}
+
+const createResposeData = ({ code, data = [], ret_msg }: createProps): ResponseData<any> => {
   const defaultMsg = getDefaultRetMsg(code);
-  return { code, ret_msg: ret_msg ?? defaultMsg, data: data ?? [], ...rest };
+  return { code, ret_msg: ret_msg ?? defaultMsg, data: data ?? [] };
 };
 
 const getSearchParams = <T extends Record<string, any>>(expectedTypes: T, searchParams: URLSearchParams): T => {
@@ -134,6 +127,6 @@ export async function GET(request: NextRequest) {
   const { search, tag, page, offset } = valuableParams;
   const data = getPostDataByKeywordAndTag(tag, search, page, offset);
 
-  const body = createResposeData<Post>({ code: ResponseCodes.OK, data });
+  const body = createResposeData({ code: ResponseCodes.OK, data });
   return NextResponse.json(body);
 }
