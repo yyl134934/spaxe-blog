@@ -1,4 +1,4 @@
-import { Post } from '@/entity/Common';
+import { Post, Summary } from '@/entity/Common';
 import dynamic from 'next/dynamic';
 
 const List = dynamic(() => import('@/components/list/List'));
@@ -10,7 +10,7 @@ interface PostLayoutProps {
     title?: string;
     isHome?: boolean;
     description?: string;
-    data: Post[];
+    data: Summary[];
     onSearch?: (e: any) => void;
     path?: string;
   };
@@ -20,7 +20,7 @@ export default function PostLayout({ children, pageProps }: PostLayoutProps) {
   const renderList = () => {
     return (
       <List isHome={pageProps?.isHome}>
-        {pageProps?.data.map((post: Post) => (
+        {pageProps?.data.map((post: Summary) => (
           <ListItem post={post} key={post?.id} path={pageProps?.path} isHome={pageProps?.isHome} />
         ))}
       </List>

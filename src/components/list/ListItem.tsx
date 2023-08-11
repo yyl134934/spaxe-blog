@@ -1,7 +1,7 @@
-import { Post } from '@/entity/Common';
+import { Summary } from '@/entity/Common';
 import Link from '@/components/Link';
 import Tag from '../Tag';
-export const Item = ({ post, isHome, path = 'blog' }: { post: Post; isHome?: boolean; path?: string }) => {
+export const Item = ({ post, isHome, path = 'blog' }: { post: Summary; isHome?: boolean; path?: string }) => {
   return (
     <div className={(isHome ? 'py-12' : 'py-4') + ' flex flex-col sm:flex-row'}>
       <div className='w-64 min-w-sm'>

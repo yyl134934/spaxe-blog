@@ -1,5 +1,5 @@
 import { ResponseData } from '@/entity/Response';
-import { getPostDataByKeywordAndTag } from '@/lib/posts';
+import { getPostListByKeywordAndTag } from '@/lib/posts';
 import { NextRequest, NextResponse } from 'next/server';
 
 type SearchParams = {
@@ -124,7 +124,7 @@ export async function GET(request: NextRequest) {
   }
 
   const { search, tag, page, offset } = valuableParams;
-  const data = getPostDataByKeywordAndTag(tag, search, page, offset);
+  const data = getPostListByKeywordAndTag(tag, search, page, offset);
 
   const body = createResposeData({ code: ResponseCodes.OK, data });
   return NextResponse.json(body);

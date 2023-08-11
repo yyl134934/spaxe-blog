@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import matter from 'gray-matter';
-import { Post, Tag } from '@/entity/Common';
+import { Post, Summary, Tag } from '@/entity/Common';
 import { ResponseData } from '@/entity/Response';
 
 const postsDirectory = path.join(process.cwd(), 'posts');
@@ -27,9 +27,47 @@ export function getSortedPostsData(): Post[] {
     }
   });
 }
+export function getSortedPostsSummary(): Summary[] {
+  //TODO Get file names under /posts
+  const fileNames = fs.readdirSync(postsDirectory);
+  const allPostData = fileNames.map((fileName) => {
+    //TODO Remove ".md" from file name to get id
+    const id = fileName.replace(/\.md$/, '');
+    const { content, ...summary } = getPostDataById(id) ?? {};
+    return summary;
+  }) as Summary[];
+
+  //TODO Sort posts by date
+  return allPostData.sort((a: Summary, b: Summary) => {
+    const { date: prevDate = 0 } = a;
+    const { date: curDate = 0 } = b;
+
+    if (prevDate < curDate) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+}
 
 export function getPostDataOfPagination(page: number = 1, offset: number = 5): Post[] {
   const sortedPostData = getSortedPostsData();
+  const total = sortedPostData.length;
+  const start = (page - 1) * offset;
+  const isEnd = page * offset > total;
+  const end = isEnd ? total : page * offset;
+  // Pages
+  return sortedPostData.slice(start, end);
+}
+
+/**
+ * 不包含content
+ * @param page
+ * @param offset
+ * @returns
+ */
+export function getPostListOfPagination(page: number = 1, offset: number = 5): Summary[] {
+  const sortedPostData = getSortedPostsSummary();
   const total = sortedPostData.length;
   const start = (page - 1) * offset;
   const isEnd = page * offset > total;
@@ -109,6 +147,27 @@ export const getPostDataByKeywordAndTag = (
   offset?: number,
 ): Post[] => {
   const data = getPostDataOfPagination(page, offset);
+
+  if (!tag && !keyword) {
+    return data;
+  }
+
+  return data.filter((post) => {
+    const { title, description, tags } = post;
+    const hasInclude =
+      ignoreCase(tags, tag) &&
+      (ignoreCase(title, keyword) || ignoreCase(description, keyword) || ignoreCase(tags, keyword));
+    return hasInclude;
+  });
+};
+
+export const getPostListByKeywordAndTag = (
+  tag: string = '',
+  keyword: string = '',
+  page?: number,
+  offset?: number,
+): Summary[] => {
+  const data = getPostListOfPagination(page, offset);
 
   if (!tag && !keyword) {
     return data;

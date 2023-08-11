@@ -1,5 +1,4 @@
-import { Post } from '@/entity/Common';
-import { ResponseData } from '@/entity/Response';
+import { Summary } from '@/entity/Common';
 import { useInfinite } from '@/hooks/useInfinite';
 import { debounce } from '@/utils/debounce';
 import { useState } from 'react';
@@ -28,5 +27,5 @@ export const useSearch = (initial: string = ''): Search => {
 
 export const usePostsQuery = (queryParams?: Record<string, any>) => {
   const pathname = 'api/getPostData';
-  return useInfinite<Post>(pathname, queryParams);
+  return useInfinite<Summary>(pathname, queryParams);
 };
