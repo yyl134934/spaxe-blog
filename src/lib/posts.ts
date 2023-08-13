@@ -116,10 +116,10 @@ export function getPostDataById(id: string): Post | null {
  * @param curPost
  * @returns [prev, next]
  */
-export function getAdjacentPostData(curPost: Post): (Post | null)[] {
-  const allPostData = getSortedPostsData();
+export function getNeighbors(id: string): (Summary | null)[] {
+  const allPostData = getSortedPostsSummary();
 
-  const index = allPostData.findIndex((post) => curPost.id === post.id);
+  const index = allPostData.findIndex((post) => id === post.id);
 
   const prev = index !== 0 ? allPostData[index - 1] : null;
   const next = index + 1 < allPostData.length ? allPostData[index + 1] : null;
@@ -182,7 +182,7 @@ export const getPostListByKeywordAndTag = (
   });
 };
 
-export const getTagsData = (): Tag => {
+export const getTagsInfo = (): Tag => {
   const allPostData = getSortedPostsData();
   return allPostData.reduce((tagObj, { tags }) => {
     const tagArray = tags?.split(',') || [];
@@ -190,5 +190,5 @@ export const getTagsData = (): Tag => {
       tagObj[tagStr] = tagObj[tagStr] ? tagObj[tagStr] + 1 : 1;
     }
     return tagObj;
-  }, {} as any);
+  }, {} as Tag);
 };

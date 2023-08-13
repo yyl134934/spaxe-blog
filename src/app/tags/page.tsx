@@ -1,7 +1,8 @@
-import { getTagsData } from '@/lib/posts';
 import { Metadata, ResolvingMetadata } from 'next';
 import siteMetadata from '@/data/siteMetadata';
 import dynamic from 'next/dynamic';
+import { fetcher } from '@/utils/fetch';
+import { Tag } from '@/entity/Common';
 
 const Link = dynamic(() => import('@/components/Link'));
 
@@ -15,8 +16,11 @@ export async function generateMetadata(
   };
 }
 
-function Tags() {
-  const tagsData = getTagsData();
+async function Tags() {
+  const TAGS_PATH = `api/tags`;
+  const { data: [tagsData] = [] } = await fetcher<Tag>(TAGS_PATH, {
+    caches: 'force-cache',
+  });
 
   return (
     <div className='flex flex-col items-start justify-start divide-y divide-gray-200 dark:divide-gray-700 md:mt-24 md:flex-row md:items-center md:justify-center md:space-x-6 md:divide-y-0'>

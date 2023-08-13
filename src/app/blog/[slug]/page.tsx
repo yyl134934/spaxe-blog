@@ -2,9 +2,11 @@ import React from 'react';
 import { Metadata, ResolvingMetadata } from 'next';
 import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
-import { getAllPostIds, getAdjacentPostData, getPostDataById } from '@/lib/posts';
+import { getAllPostIds, getNeighbors, getPostDataById } from '@/lib/posts';
 import MarkDownLoading from '@/components/markdown/Loading';
 import siteMetadata from '@/data/siteMetadata';
+import { fetcher } from '@/utils/fetch';
+import { Post, Summary } from '@/entity/Common';
 
 const Link = dynamic(() => import('@/components/Link'));
 const MarkDown = dynamic(() => import('@/components/markdown/MarkDown'), {
@@ -14,33 +16,42 @@ const Author = dynamic(() => import('@/components/Author'), {});
 const ScrollTop = dynamic(() => import('@/components/ScrollToTop'), {});
 const Tag = dynamic(() => import('@/components/Tag'), {});
 
-export function generateStaticParams() {
-  const allPostIds = getAllPostIds();
+// export function generateStaticParams() {
+//   const allPostIds = getAllPostIds();
 
-  return allPostIds.map((id) => ({ params: { slug: id } }));
-}
+//   return allPostIds.map((id) => ({ params: { slug: id } }));
+// }
 
 export async function generateMetadata(
   { params, searchParams }: { params: { slug: string }; searchParams: any },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const data = getPostDataById(params.slug);
+  const { data } = await fetcher<Post>(`api/postDetails?slug=${params.slug}`, {
+    caches: 'force-cache',
+  });
+
+  const currentPostData = data?.[0];
 
   return {
-    title: data?.title ?? '404',
-    description: ` ${data?.title}-${params.slug}-${data?.tags}-${data?.description}-${siteMetadata.author}`,
+    title: currentPostData?.title ?? '404',
+    description: ` ${currentPostData?.title}-${params.slug}-${currentPostData?.tags}-${currentPostData?.description}-${siteMetadata.author}`,
   };
 }
 
-export default function PostDetails({ params }: { params: { slug: string } }) {
-  const currentPostData = getPostDataById(params.slug);
+export default async function PostDetails({ params }: { params: { slug: string } }) {
+  const { data: [currentPostData] = [] } = await fetcher<Post>(`api/postDetails?slug=${params.slug}`, {
+    caches: 'force-cache',
+  });
 
   if (!currentPostData) {
     notFound();
   }
 
-  const { date, title, content, tags, author, name, github } = currentPostData;
-  const [prevPostData, nextPostData] = getAdjacentPostData(currentPostData);
+  const { date, title, content, tags, author, name, github, id } = currentPostData;
+  const { data: [prevPostData, nextPostData] = [] } = await fetcher<Summary>(`api/postNeighbors?cur_id=${id}`, {
+    caches: 'force-cache',
+  });
+  // const [prevPostData, nextPostData] = getNeighbors(id);
 
   return (
     <div>

@@ -1,11 +1,13 @@
 import dynamic from 'next/dynamic';
 import PostLayout from '@/layout/PostLayout';
-import { getPostListOfPagination } from '@/lib/posts';
+import { fetcher } from '@/utils/fetch';
+import { Summary } from '@/entity/Common';
 
 const Link = dynamic(() => import('@/components/Link'));
 
-export default function Home() {
-  const data = getPostListOfPagination();
+export default async function Home() {
+  const { data = [] } = await fetcher<Summary>('api/postList', { cache: 'force-cache' });
+
   return (
     <PostLayout pageProps={{ data: data, isHome: true, title: '最近更新', description: '近几个月来的更新' }}>
       <div className='flex justify-end py-4'>

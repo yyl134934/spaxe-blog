@@ -1,21 +1,15 @@
-import { getPostListByKeywordAndTag } from '@/lib/posts';
+import { getPostDataById } from '@/lib/posts';
 import { NextRequest, NextResponse } from 'next/server';
 import { ResponseCodes, createResposeData, getSearchParams, valid } from '../common';
 
 type SearchParams = {
-  tag?: string;
-  search?: string;
-  page?: number;
-  offset?: number;
+  slug: string;
 };
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const expectedTypes: SearchParams = {
-    tag: '',
-    search: '',
-    page: 0,
-    offset: 0,
+    slug: '',
   };
   const valuableParams = getSearchParams<SearchParams>(expectedTypes, searchParams);
 
@@ -29,9 +23,9 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const { search, tag, page, offset } = valuableParams;
-  const data = getPostListByKeywordAndTag(tag, search, page, offset);
+  const { slug } = valuableParams;
+  const post = getPostDataById(slug);
 
-  const body = createResposeData({ code: ResponseCodes.OK, data });
+  const body = createResposeData({ code: ResponseCodes.OK, data: [post] });
   return NextResponse.json(body);
 }

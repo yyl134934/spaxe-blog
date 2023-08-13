@@ -1,10 +1,11 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import SearchLayout from '@/layout/SearchLayout/SearchLayout';
 import siteMetadata from '@/data/siteMetadata';
-import { getTagsData } from '@/lib/posts';
+import { fetcher } from '@/utils/fetch';
 
-export function generateStaticParams() {
-  const tags = getTagsData();
+export async function generateStaticParams() {
+  const TAGS_PATH = 'api/tags';
+  const tags = fetcher(TAGS_PATH, { cache: 'force-cache' });
 
   return Object.keys(tags).map((tag) => ({ params: { tag: tag } }));
 }
