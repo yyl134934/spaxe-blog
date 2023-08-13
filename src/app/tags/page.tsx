@@ -17,8 +17,7 @@ export async function generateMetadata(
 }
 
 async function Tags() {
-  const TAGS_PATH = `api/tags`;
-  const { data: [tagsData] = [] } = await fetcher<Tag>(TAGS_PATH, {
+  const { data: [tagsData] = [{}] } = await fetcher<Tag>('api/tags', {
     caches: 'force-cache',
   });
 

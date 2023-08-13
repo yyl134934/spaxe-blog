@@ -4,8 +4,7 @@ import siteMetadata from '@/data/siteMetadata';
 import { fetcher } from '@/utils/fetch';
 
 export async function generateStaticParams() {
-  const TAGS_PATH = 'api/tags';
-  const tags = fetcher(TAGS_PATH, { cache: 'force-cache' });
+  const tags = fetcher('api/tags', { cache: 'force-cache' });
 
   return Object.keys(tags).map((tag) => ({ params: { tag: tag } }));
 }

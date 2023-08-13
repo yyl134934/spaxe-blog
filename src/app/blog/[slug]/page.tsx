@@ -51,7 +51,6 @@ export default async function PostDetails({ params }: { params: { slug: string }
   const { data: [prevPostData, nextPostData] = [] } = await fetcher<Summary>(`api/postNeighbors?cur_id=${id}`, {
     caches: 'force-cache',
   });
-  // const [prevPostData, nextPostData] = getNeighbors(id);
 
   return (
     <div>
