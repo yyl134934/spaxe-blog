@@ -6,6 +6,8 @@ import { Tag } from '@/entity/Common';
 
 const Link = dynamic(() => import('@/components/Link'));
 
+export const runtime = 'edge';
+
 export async function generateMetadata(
   { params, searchParams }: { params: { slug: string }; searchParams: any },
   parent: ResolvingMetadata,

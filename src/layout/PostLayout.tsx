@@ -20,7 +20,7 @@ export default function PostLayout({ children, pageProps }: PostLayoutProps) {
   const renderList = () => {
     return (
       <List isHome={pageProps?.isHome}>
-        {pageProps?.data.map((post: Summary) => (
+        {pageProps?.data?.map((post: Summary) => (
           <ListItem post={post} key={post?.id} path={pageProps?.path} isHome={pageProps?.isHome} />
         ))}
       </List>

@@ -5,6 +5,8 @@ import { Summary } from '@/entity/Common';
 
 const Link = dynamic(() => import('@/components/Link'));
 
+export const runtime = 'edge';
+
 export default async function Home() {
   const { data = [] } = await fetcher<Summary>('api/postList', { cache: 'force-cache' });
 

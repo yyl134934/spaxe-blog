@@ -1,6 +1,6 @@
 import { getNeighbors } from '@/lib/posts';
 import { NextRequest, NextResponse } from 'next/server';
-import { ResponseCodes, createResposeData, getSearchParams, valid } from '../common';
+import { ResponseCodes, createResposeData, getSearchParams, valid } from '../../../common';
 
 type SearchParams = {
   cur_id: string;
