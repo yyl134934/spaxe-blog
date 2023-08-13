@@ -26,6 +26,6 @@ export const useSearch = (initial: string = ''): Search => {
 };
 
 export const usePostsQuery = (queryParams?: Record<string, any>) => {
-  const pathname = 'api/getPostData';
+  const pathname = 'api/postList';
   return useInfinite<Summary>(pathname, queryParams);
 };
