@@ -39,7 +39,7 @@ export default function PostLayout({ children, pageProps }: PostLayoutProps) {
           ) : (
             <>
               <input
-                className=' focus-visible:outline-primary-500 focus-visible:ring-primary-500 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 dark:border-gray-900 dark:bg-gray-800 dark:text-gray-100'
+                className=' focus-visible:outline-primary-500 focus:border-transparent focus-visible:ring-primary-500 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 dark:border-gray-900 dark:bg-gray-800 dark:text-gray-100'
                 aria-label='Search articles|搜索文章'
                 type='text'
                 placeholder='搜索文章'
