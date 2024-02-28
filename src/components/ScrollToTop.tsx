@@ -14,8 +14,19 @@ const ScrollTop = () => {
     return () => window.removeEventListener('scroll', handleWindowScroll);
   }, []);
 
+  // 当前滚动位置
+  let scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+  // 定义平滑滚动函数
+  function smoothScrollTop() {
+    if (scrollTop > 0) {
+      window.requestAnimationFrame(smoothScrollTop);
+      window.scrollTo(0, scrollTop - scrollTop / 5);
+    }
+  }
+
   const handleScrollTop = () => {
-    window.scrollTo({ top: 0 });
+    smoothScrollTop();
   };
   return (
     <div className={`fixed right-8 bottom-8 hidden flex-col gap-3 ${show ? 'md:flex' : 'md:hidden'}`}>
