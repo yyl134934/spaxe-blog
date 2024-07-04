@@ -57,9 +57,10 @@ export const useInfinite = <T>(
     data = [],
     size,
     setSize,
+    isValidating,
   } = useSWRInfinite(getKey<T>(queryParams), fetcher<T>(pathname), { ...initialOptions, ...options });
   const summaryData = data.reduce((acc, cur) => acc.concat(cur.data as T), [] as T[]);
   const isEnd = hasNotNextPage(size, data);
 
-  return { summaryData, setSize, isEnd };
+  return { summaryData, setSize, isEnd, isLoading: isValidating };
 };

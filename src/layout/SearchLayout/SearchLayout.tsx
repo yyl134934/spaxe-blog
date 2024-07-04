@@ -19,7 +19,7 @@ export default function SearchLayout({ children, pageProps }: SearchLayoutProps)
   const { tag, ...rest } = pageProps ?? { initialKeyword: '' };
   const { keyword: searchKeyword, onSearch } = useSearch();
 
-  const { summaryData, setSize, isEnd } = usePostsQuery({ search: searchKeyword, tag });
+  const { summaryData, setSize, isEnd, isLoading } = usePostsQuery({ search: searchKeyword, tag });
 
   const handleNext = () => {
     setSize((prevSize) => prevSize + 1);
@@ -28,7 +28,7 @@ export default function SearchLayout({ children, pageProps }: SearchLayoutProps)
   return (
     <PostLayout pageProps={{ data: summaryData as Post[], onSearch, ...rest }}>
       {children}
-      {summaryData.length === 0 ? null : <MoreLoad handleNext={handleNext} isEnd={isEnd} />}
+      {summaryData.length === 0 ? null : <MoreLoad handleNext={handleNext} isEnd={isEnd} isLoading={isLoading} />}
     </PostLayout>
   );
 }
