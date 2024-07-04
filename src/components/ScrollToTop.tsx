@@ -14,25 +14,12 @@ const ScrollTop = () => {
     return () => window.removeEventListener('scroll', handleWindowScroll);
   }, []);
 
-  // 定义平滑滚动函数
-  function smoothScrollTop(scrollTop = 0) {
-    let nextPosition = scrollTop;
-
-    if (nextPosition > 10) {
-      nextPosition = nextPosition - nextPosition / 5;
-      window.requestAnimationFrame(() => smoothScrollTop(nextPosition));
-      window.scrollTo(0, nextPosition);
-    } else {
-      window.scrollTo(0, 0);
-    }
-  }
-
   const handleScrollTop = () => {
-    // 当前滚动位置
-    let scrollTop = window.scrollY || document.documentElement.scrollTop;
-
-    smoothScrollTop(scrollTop);
-    // window.scrollTo(0, 0);
+    window.scrollTo({
+      left: 0,
+      top: 0,
+      behavior: 'smooth',
+    });
   };
   return (
     <div className={`fixed right-8 bottom-8 hidden flex-col gap-3 ${show ? 'md:flex' : 'md:hidden'}`}>
